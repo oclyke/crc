@@ -56,43 +56,13 @@ class polynomial:
         return retval
 
     def __lshift__(self, num):
-        new_bits = self.bits + num
-        high_bit_index = self.get_highest_bit_index()
-        if( (high_bit_index + num) > (self.get_max_bit_index()) ):
-            bytes_to_add = math.ceil(((high_bit_index + num) - (self.get_max_bit_index()))/8)
-            self.add_high_bytes(bytes_to_add)
-            self.bits = new_bits
-
-        print('NEED TO WORK ON LSHIFT OPERATOR!')
-
-        # reach_back_bytes = math.ceil(num/8)
-        # print('reach back bytes: '+str(reach_back_bytes))
-        # for b in range(len(self.data)):
-        #     ind = self.get_byte_index_by_byte(b)                    # account for endianness
-        #     reach_back_ind = self.get_byte_index_by_byte(b-reach_back_bytes)
-
-        #     # print(ind)
-        #     print(reach_back_ind)
-
-        #     # tempH = (self.data[ind] << num)                         # shift the current byte (when num is small this may retain some bits)
-        #     # tempL = 0                                               # shift in zeroes from infinity
-        #     # if(ind>=reach_back_bytes):                              # if there are lower bytes...
-        #     #     tempL = (self.data[ind-reach_back_bytes] << num)    # we want to capture carry bits
-
-        #     # print('tempH: '+str(hex(tempH))+', tempL: '+str(hex(tempL)))
-            
-        #     # # self.data[ind] = (tempH | tempL)                        # store the new data
-
-
-        #     # 
-        #     # print('shifting over data in byte: '+str(b)+', temp = '+str(hex(temp)))
-        #     # self.data[b] = temp
-            
-
-        # # self.bits += num
-        # # # shift over data by num bits
-
-        return self
+        size = self.bits + num
+        retval = polynomial(bytearray(math.ceil(size/8)), bits=size)
+        for i in range(self.bits):
+            retval.set_bit(i+num,self.get_bit(i))
+        for i in range(num):
+            retval.set_bit(i, 0)
+        return retval
 
     # def __rshift__(self, num):
     #     # shift over data by num bits
