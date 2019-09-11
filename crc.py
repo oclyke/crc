@@ -181,12 +181,10 @@ print('Division is a little messier as we need to know when "a number goes into 
 pN = polynomial(b'\x35\xb0', bits=14)
 pD = polynomial(b'\x13\xb0', bits=5)
 pW = pN
+pW_virtual_bits = pW.bits
 print('-- in this example the quotient is not calculated --')
 print('       ---------------')
 print(str(pD)+' ) '+str(pW))
-
-pW_virtual_bits = pW.bits
-
 for i in range(pN.bits-pD.bits,-1,-1):
     s = ' '*(8+(pN.bits-pD.bits-i))
     if(pW/(pD<<i)):
@@ -194,10 +192,12 @@ for i in range(pN.bits-pD.bits,-1,-1):
         pW -= (pD<<i)
     else:
         print(s+str(p0*(pD<<i)))
-
     print(s+'-----')
     pW_virtual_bits-=1
     print(' '+s+pW.to_str(pW_virtual_bits))
+
+print('The remainder is the CRC checksum')
+
 print()
 print('6. A Fully Worked Example')
 print('-------------------------')
@@ -210,6 +210,8 @@ print('------------------')
 # Interesting math + implemntation facts that are best explianed in the original text
 
 print()
+print('8. A Straightforward CRC Implementation')
+print('---------------------------------------')
 
 
 
@@ -263,30 +265,12 @@ def crc_simple( msg, poly ):
     W = poly.bits                                                           # find the required register width
     register = polynomial(polynomial(bytearray(math.ceil(W/8)), bits=W))    # create the CRC division register with width W
 
-            
 
 
 
 
+# def rand_byte():
+#     return random.getrandbits(8)
 
-# msg = polynomial(b'\xDE\xA3')
-# poly = polynomial(b'\x0B',bits=4)
-
-# result = (msg ^ poly)
-# result.print_self()
-
-msg = polynomial(b'\x57\x00')
-poly = polynomial(b'\x01\x07',bits=9)
-
-# crc_cs1( msg, poly )
-
-
-# poly.add_high_bytes(1)
-
-# test = polynomial(b'\x01',bits=1)
-test = polynomial(b'\x81',bits=8)
-print(test)
-
-test <<= 9
-
-print(test)
+# for i in range(10):
+#     print(polynomial.from_random(16, rand_byte))
