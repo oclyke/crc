@@ -122,8 +122,11 @@ class polynomial:
     def get_max_bit_index(self):
         return ((len(self.data)*8) - 1)
 
+    def to_str(self, bits=None):
+        return (''.join(map(str, (self.get_bit(i) for i in range((self.bits if (bits == None) else bits)-1, -1, -1))))) # print bit representation
+
     def __repr__(self):
         return 'crc polynomial'
     def __str__(self):
-        return ( ('polynomial class with:\n') + ('bits: ' + str(self.bits)) + ('\ndata:' + str(self.data)) + '\n' )
-        
+        # return ( ('polynomial class with:\n') + ('bits: ' + str(self.bits)) + ('\ndata:' + str(self.data)) + '\n' ) # print information
+        return self.to_str()
