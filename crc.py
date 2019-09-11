@@ -4,6 +4,8 @@
 # http://www.ross.net/crc/download/crc_v3.txt
 
 import math
+import random
+from polynomial import polynomial
 
 print('1. Introduction: Error Detection')
 print('--------------------------------')
