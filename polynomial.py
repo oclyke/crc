@@ -109,7 +109,6 @@ class polynomial:
             return b
 
     def add_high_bytes(self, num):
-        self.bits += 8*num
         if(self.order=='big'):
             temp = bytearray(num)
             temp.extend(self.data)
