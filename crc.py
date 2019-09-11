@@ -10,12 +10,14 @@ print('--------------------------------')
 # Checksums are values transmitted along with a message to detect errors introduced in the transmission/
 # reception process, but they are not all created equally secure
 
+print()
 print('2. The Need For Complexity')
 print('--------------------------')
 # Here the text describes that the two criteria for a good checksum are
 #   WIDTH - reduces the probability that an erroneous checksum will match a valid checksum
 #   CHAOS - allows for full utilization of a wide checksum
 
+print()
 print('3. The Basic Idea Behind CRC Algorithms')
 print('---------------------------------------')
 # Ross Williams explains that while simple addition is not chaotic enough division is as long as the 
@@ -25,6 +27,7 @@ print('---------------------------------------')
 # cannot be larger than the divisior
 # The remainder is a good checksum b/c it is affected pretty equally by each bit in the dividend (the message)
 
+print()
 print('4. Polynomical Arithmetic')
 print('-------------------------')
 # To make division more applicable to the computer systems on which CRC checksums are implemented we introduce
@@ -69,20 +72,24 @@ print('-------------------------')
 
 # The original text clearly explains the advantages of performing the arithmetic in terms of polynomials
 
+print()
 print('5. Binary Arithmetic with No Carries')
 print('------------------------------------')
 # This section explains the particular flavor of polynomial arithmetic that is used in CRC calculation
 # The most useful fact is that binary arithmetic with no carries only operates within a given bit position, reducing state.
 
+print()
 print('6. A Fully Worked Example')
 print('-------------------------')
 # Here the original text performs a long division using 'binary arithmetic without carries' which is an equivalent operation
 # to the core of CRC generation algorithms.
 
+print()
 print('7. Choosing A Poly')
 print('------------------')
 # Interesting math + implemntation facts that are best explianed in the original text
 
+print()
 
 
 
