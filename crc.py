@@ -19,9 +19,10 @@
 # SOFTWARE.
 
 # an exploration of CRC calculation following along with 
-# https://en.wikipedia.org/wiki/Computation_of_cyclic_redundancy_checks
-# and
 # http://www.ross.net/crc/download/crc_v3.txt
+# also see these resources
+# https://en.wikipedia.org/wiki/Computation_of_cyclic_redundancy_checks
+
 
 import math
 import random
