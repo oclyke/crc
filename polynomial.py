@@ -117,6 +117,7 @@ class polynomial:
         for index in range(self.bits-1, -1, -1):
             if(self.get_bit(index)):
                 return index
+        return 0
     
     def get_max_bit_index(self):
         return ((len(self.data)*8) - 1)
