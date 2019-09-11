@@ -1,9 +1,11 @@
+
+import math
+
 # Here is a first draft of some pseudocode for computing an n-bit CRC. It uses a contrived composite 
 # data type for polynomials, where x is not an integer variable, but a constructor generating a Polynomial 
 # object that can be added, multiplied and exponentiated. To xor two polynomials is to add them, modulo 
 # two; that is, to exclusive OR the coefficients of each matching term from both polynomials.
 
-import math
 
 class polynomial:
     def __init__ (self, data, bits=0, order='big'):
