@@ -24,6 +24,30 @@ class polynomial:
         polynomial = cls(data, bits, order)
         return polynomial
 
+    def __add__(self, o):
+        return (self^o)
+
+    def __sub__(self, o):
+        return (self^o)
+    
+    def __mul__(self, o):
+        size = (self.bits + o.bits)
+        if(size > 1):
+            size -= 1
+        retval = polynomial(bytearray(math.ceil(size/8)), bits=size)
+        for i in range(o.bits):
+            if(o.get_bit(i)):
+                retval += (self << i)
+        return retval
+
+    def __truediv__(self, o):
+        # # X is greater than or equal to Y iff the position of the highest 1 bit of 
+        # # X is the same or greater than the position of the highest 1 bit of Y.
+        if(self.get_highest_bit_index() >= o.get_highest_bit_index()):
+            return 1
+        else:
+            return 0
+
     def __xor__(self, o):
         size = min(self.bits, o.bits)
         retval = polynomial(bytearray(math.ceil(size/8)), bits=size)
