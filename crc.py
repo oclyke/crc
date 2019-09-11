@@ -81,6 +81,124 @@ print('------------------------------------')
 # The most useful fact is that binary arithmetic with no carries only operates within a given bit position, reducing state.
 
 print()
+print('example of binary arithmetic with no carries')
+pA = polynomial(b'\x9B')
+pB = polynomial(b'\xCA')
+print(' ' + str(pA))
+print('+' + str(pB))
+print('--------')
+print(' ' + str( pA + pB ))
+
+print()
+print('there are only four cases for each bit position')
+p0 = polynomial(b'\x00', bits=1)
+p1 = polynomial(b'\x01', bits=1)
+print(str(p0)+'+'+str(p0)+'='+str(p0+p0))
+print(str(p0)+'+'+str(p1)+'='+str(p0+p1))
+print(str(p1)+'+'+str(p0)+'='+str(p1+p0))
+print(str(p1)+'+'+str(p1)+'='+str(p1+p1)+'  (no carry)')
+
+print()
+print('subtraction is identical')
+print(' ' + str(pA))
+print('-' + str(pB))
+print('--------')
+print(' ' + str( pA - pB ))
+
+print()
+print('with')
+print(str(p0)+'-'+str(p0)+'='+str(p0-p0))
+print(str(p0)+'-'+str(p1)+'='+str(p0-p1)+'  (wraparound)')
+print(str(p1)+'-'+str(p0)+'='+str(p1-p0))
+print(str(p1)+'-'+str(p1)+'='+str(p1-p1))
+
+print()
+# There may be a typo in the original text on this section. It should say:
+#   1001 = 1010 + 0011
+#   1001 = 1010 - 0011
+# But instead it lists 1010 in both the 1010 position and also the 1001 position
+print('Binary ariethmetic w/o carry makes nonsense of any (traditional) notion of order')
+pA = polynomial(b'\x0a', bits=4)
+pB = polynomial(b'\x03', bits=4)
+print(str(pA+pB)+' = '+str(pA)+' + '+str(pB))
+print(str(pA-pB)+' = '+str(pA)+' - '+str(pB))
+
+print()
+print('Multiplication is absolutely straightforward, being the sum of the\nfirst number, shifted in accordance with the second number.')
+# So why does Ross Williams say that the result is just:
+# 'the sum of the first number, shifted in accordance with the second number?'
+# That part may seem a little obscure but we have to remember the origins of the binary arithmetic w/o carries
+
+# Lets do a few examples to get a feel:
+# 1   x 1101 ? well clearly just 1101
+# 10  x 1101 ? okay that is:
+#              x^1 * (x^3 + x^2 + x^0)
+#              x^4 + x^3 + x^1
+#              which is 11010  <> notice that this is 1101 shifted left by one bit...
+# 100 x 1101 ? alright:
+#              x^2 * (x^3 + x^2 + x^0)
+#              x^5 + x^4 + x^2
+#              which is 110100 <> notice again, the result is 1101 shifted left by two bits
+# 
+# We can see a pattern as well as it's mathematic origins.
+# With only one binary coefficient set the x^n (where n is the nth bit that is set) term
+# distributes into the other terms and only changes their order (power). Well the order in
+# polynomial arithmetic determines which bit is used to represent that coefficient. Finally 
+# thanks to the multiplicative exponent rule we know that a number with the nth bit set will
+# add n to the order of all the terms in the result. That is equivalent to adding n to the 
+# index of the bit used to represent the coefficient - i.e. shifting the bits left.
+#
+# When multiplying a more complex pair you can decompose into additions for the multiplication 
+# of each individual bit index.
+#
+# (this text example reflects that of the original text adding powers 
+#  of '1011' to demonstrate that multiplication is commutative)
+# 
+#     1011
+#   x 1101
+#     ----
+#     1011
+#    0000.
+#   1011..
+#  1011...
+#  -------
+#  1111111  Note: the sum uses CRC addition
+#
+pA = polynomial(b'\x0d', bits=4)
+pB = polynomial(b'\x0b', bits=4)
+print('   '+str(pA))
+print(' x '+str(pB))
+print('   ----')
+print('   '+str(pA << 0))
+print('  '+str(pA << 1))
+print(' '+str(pA << 2))
+print(''+str(pA << 3))
+print('-------')
+print(pA*pB)
+
+print()
+print('Division is a little messier as we need to know when "a number goes into another number"')
+pN = polynomial(b'\x35\xb0', bits=14)
+pD = polynomial(b'\x13\xb0', bits=5)
+pW = pN
+print('-- in this example the quotient is not calculated --')
+print('       ---------------')
+print(str(pD)+' ) '+str(pW))
+
+pW_virtual_bits = pW.bits
+
+for i in range(pN.bits-pD.bits,-1,-1):
+    s = ' '*(8+(pN.bits-pD.bits-i))
+    if(pW/(pD<<i)):
+        print(s+str(pD<<i))
+        pW -= (pD<<i)
+    else:
+        print(s+str(p0*(pD<<i)))
+
+    print(s+'-----')
+    pW_virtual_bits-=1
+    print(' '+s+pW.to_str(pW_virtual_bits))
+print()
 print('6. A Fully Worked Example')
 print('-------------------------')
 # Here the original text performs a long division using 'binary arithmetic without carries' which is an equivalent operation
