@@ -82,6 +82,7 @@ class polynomial:
     
     def get_bit(self, bit):
         if( bit >= self.bits ):
+            raise Exception('bit index exceeded allocated size. requested index: {}, max index: {}'.format(bit, self.bits))
             return 0
 
         byte = self.get_byte_index_by_bit(bit)
