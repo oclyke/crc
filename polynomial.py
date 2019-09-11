@@ -49,11 +49,10 @@ class polynomial:
             return 0
 
     def __xor__(self, o):
-        size = min(self.bits, o.bits)
+        size = max(self.bits, o.bits)
         retval = polynomial(bytearray(math.ceil(size/8)), bits=size)
-        for bit in range(size):
+        for bit in range(min(self.bits, o.bits)):
             retval.set_bit(bit, self.get_bit(bit) ^ o.get_bit(bit))
-            # print( str(self.get_bit(bit)) + ' ^ ' + str(o.get_bit(bit)) + ' = ' + str(retval.get_bit(bit)) )
         return retval
 
     def __lshift__(self, num):
