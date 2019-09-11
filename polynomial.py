@@ -50,7 +50,10 @@ class polynomial:
 
     def __xor__(self, o):
         size = max(self.bits, o.bits)
-        retval = polynomial(bytearray(math.ceil(size/8)), bits=size)
+        if(self.bits >= o.bits):
+            retval = self
+        else:
+            retval = o
         for bit in range(min(self.bits, o.bits)):
             retval.set_bit(bit, self.get_bit(bit) ^ o.get_bit(bit))
         return retval
