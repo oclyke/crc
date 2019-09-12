@@ -201,23 +201,25 @@ print()
 print('Division is a little messier as we need to know when "a number goes into another number"')
 pN = polynomial(b'\x35\xb0', bits=14)
 pD = polynomial(b'\x13\xb0', bits=5)
-pW = pN
-pW_virtual_bits = pW.bits
 print('-- in this example the quotient is not calculated --')
-print('       ---------------')
-print(str(pD)+' ) '+str(pW))
-for i in range(pN.bits-pD.bits,-1,-1):
-    s = ' '*(8+(pN.bits-pD.bits-i))
-    if(pW/(pD<<i)):
-        print(s+str(pD<<i))
-        pW -= (pD<<i)
-    else:
-        print(s+str(p0*(pD<<i)))
-    print(s+'-----')
-    pW_virtual_bits-=1
-    print(' '+s+pW.to_str(pW_virtual_bits))
+def long_division_crc(pN, pD):
+    pW = pN
+    pW_virtual_bits = pW.bits
+    print('       ---------------')
+    print(str(pD)+' ) '+str(pW))
+    for i in range(pN.bits-pD.bits,-1,-1):
+        s = ' '*(8+(pN.bits-pD.bits-i))
+        if(pW/(pD<<i)):
+            print(s+str(pD<<i))
+            pW -= (pD<<i)
+        else:
+            print(s+str(p0*(pD<<i)))
+        print(s+'-----')
+        pW_virtual_bits-=1
+        print(' '+s+pW.to_str(pW_virtual_bits))
 
-print('The remainder is the CRC checksum')
+    print('The remainder is the CRC checksum')
+long_division_crc(pN, pD)
 
 print()
 print('6. A Fully Worked Example')
