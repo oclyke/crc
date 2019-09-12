@@ -26,6 +26,15 @@ import math
 # two; that is, to exclusive OR the coefficients of each matching term from both polynomials.
 
 
+def poly_access_exception(index, poly):
+    return ('polynomial: index out of range. requested: {}, max: {}'.format(index, poly.bits-1))
+
+def poly_type_exception():
+    return ('polynomial: need polynomial type as argument')
+
+def poly_size_exception(size, poly):
+    return ('polynomial: need polynomial of length {}, got length {}'.format(size, poly.bits))
+
 class polynomial:
     def __init__ (self, data, bits=0, order='big'):
         data = bytearray(data)
@@ -42,6 +51,10 @@ class polynomial:
             data[i] = rbyte()
         polynomial = cls(data, bits, order)
         return polynomial
+
+    def check_index(self, index):
+        if((index < 0) or (index >= self.bits)):
+            raise Exception(poly_access_exception(index, self))
 
     def __add__(self, o):
         return (self^o)
@@ -89,6 +102,41 @@ class polynomial:
     # def __rshift__(self, num):
     #     # shift over data by num bits
 
+    def __getitem__(self, key):
+        if isinstance(key, slice):
+            self.check_index(key.start)
+            self.check_index(key.stop)
+            size = self.bits
+            retval = polynomial(bytearray(math.ceil(size/8)), bits=size)
+            request = range(key.start, key.stop, 1 if (key.step == None) else key.step)
+            for i in range(len(request)):
+                retval[i] = self[request[i]]
+                # This method returns a condensed polynomial, as opposed to leaving locations intact
+            return retval
+        else:
+            self.check_index(key)
+            return self.get_bit(key)
+
+    def __setitem__(self, key, value):
+        if isinstance(key, slice):
+            self.check_index(key.start)
+            self.check_index(key.stop)
+            request = range(key.start, key.stop, 1 if (key.step == None) else key.step)
+            size = len(request)
+            if not isinstance(value, polynomial):
+                raise Exception(poly_type_exception())
+            if( value.bits != size ):
+                raise Exception(poly_size_exception(size, value))
+            for i in range(len(request)):
+                self[request[i]] = value[i]
+                # This expands a condensed poly into the desired slice, as opposed to preserving index locations
+            return self
+        else:
+            self.check_index(key)
+            self.set_bit(key, value)
+            return self
+
+
     def set_bit(self, bit, val):
         if( bit >= self.bits ):
             return 0
@@ -103,10 +151,7 @@ class polynomial:
         return self
     
     def get_bit(self, bit):
-        if( bit >= self.bits ):
-            raise Exception('bit index exceeded allocated size. requested index: {}, max index: {}'.format(bit, self.bits))
-            return 0
-
+        self.check_index(bit)
         byte = self.get_byte_index_by_bit(bit)
         if(self.data[byte] & (0x01 << (bit%8))):
             return 1
