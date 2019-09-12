@@ -68,7 +68,7 @@ class polynomial:
             size -= 1
         retval = polynomial(bytearray(math.ceil(size/8)), bits=size)
         for i in range(o.bits):
-            if(o.get_bit(i)):
+            if(o[i]):
                 retval += (self << i)
         return retval
 
@@ -85,22 +85,21 @@ class polynomial:
         retval = polynomial(bytearray(math.ceil(size/8)), bits=size)
         if(self.bits >= o.bits):
             for bit in range(size):
-                retval.set_bit(bit, self.get_bit(bit))
+                retval[bit] = self[bit]
         else:
             for bit in range(size):
-                retval.set_bit(bit, o.get_bit(bit))
+                retval[bit] = o[bit]
         for bit in range(min(self.bits, o.bits)):
-            retval.set_bit(bit, 1)
-            retval.set_bit(bit, self.get_bit(bit) ^ o.get_bit(bit))
+            retval[bit] = (self[bit] ^ o[bit])
         return retval
 
     def __lshift__(self, num):
         size = self.bits + num
         retval = polynomial(bytearray(math.ceil(size/8)), bits=size)
         for i in range(self.bits):
-            retval.set_bit(i+num,self.get_bit(i))
+            retval[i+num] = self[i]
         for i in range(num):
-            retval.set_bit(i, 0)
+            retval[i] = 0
         return retval
 
     # def __rshift__(self, num):
@@ -184,7 +183,7 @@ class polynomial:
 
     def get_highest_bit_index(self):
         for index in range(self.bits-1, -1, -1):
-            if(self.get_bit(index)):
+            if(self[index]):
                 return index
         return 0
     
@@ -192,7 +191,7 @@ class polynomial:
         return ((len(self.data)*8) - 1)
 
     def to_str(self, bits=None):
-        return (''.join(map(str, (self.get_bit(i) for i in range((self.bits if (bits == None) else bits)-1, -1, -1))))) # print bit representation
+        return (''.join(map(str, (self[i] for i in range((self.bits if (bits == None) else bits)-1, -1, -1))))) # print bit representation
 
     def __repr__(self):
         return ( ('polynomial class with:\n') + ('bits: ' + str(self.bits)) + ('\ndata:' + str(self.data)) + '\n' ) # print information
