@@ -143,14 +143,12 @@ class polynomial:
 
     def set_bit(self, bit, val):
         if( bit >= self.bits ):
-            return 0
-            
+            return self
         byte = self.get_byte_index_by_bit(bit)
         temp = self.data[byte]
         temp &= ~(0x01 << (bit%8))
         if(val):
             temp |= (0x01 << (bit%8))
-        
         self.data[byte] = temp
         return self
     
