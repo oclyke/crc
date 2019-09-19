@@ -109,9 +109,9 @@ class polynomial:
         if isinstance(key, slice):
             self.check_index(key.start)
             self.check_index(key.stop)
-            size = self.bits
-            retval = polynomial(bytearray(math.ceil(size/8)), bits=size)
             request = range(key.start, key.stop, 1 if (key.step == None) else key.step)
+            size = len(request)
+            retval = polynomial(bytearray(math.ceil(size/8)), bits=size)
             for i in range(len(request)):
                 retval[i] = self[request[i]]
                 # This method returns a condensed polynomial, as opposed to leaving locations intact

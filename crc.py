@@ -217,9 +217,10 @@ def long_division_crc(pN, pD):
         print(s+'-----')
         pW_virtual_bits-=1
         print(' '+s+pW.to_str(pW_virtual_bits))
-
     print('The remainder is the CRC checksum')
-long_division_crc(pN, pD)
+    return pW[0:pD.bits-1]
+
+print(long_division_crc(pN, pD))
 
 print()
 print('6. A Fully Worked Example')
@@ -292,8 +293,48 @@ def crc_simple( msg, poly ):
 
 
 
-# def rand_byte():
-#     return random.getrandbits(8)
+# # def rand_byte():
+# #     return random.getrandbits(8)
 
-# for i in range(10):
-#     print(polynomial.from_random(16, rand_byte))
+# # for i in range(10):
+# #     print(polynomial.from_random(16, rand_byte))
+
+
+# p = polynomial(b'\xab', bits=7)
+# print(p)
+
+
+# # print(p[6])
+# # p[6] = 1
+# # print(p)
+
+# print(p[0:6])
+
+# abits = 16
+# a = polynomial(bytearray(math.ceil(abits/8)), bits=abits)
+# print(a)
+
+# a[1:7] = p[0:6]
+# # print(type(p[0:6]))
+# print(a)
+
+
+def rand_byte():
+    return random.getrandbits(8)
+
+def aa_byte():
+    return 0xaa
+
+# p = polynomial.from_random(32, rand_byte)
+bits = 32
+p = polynomial.from_random(bits, aa_byte)
+print(p)
+
+# a = p[1:10:2]
+# print(a)
+
+a = polynomial(bytearray(math.ceil(bits/8)))
+g = polynomial(b'\xed', bits=5)
+print(g)
+a[1:10:2] = g
+print(a)
