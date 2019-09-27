@@ -63,14 +63,24 @@ class polynomial:
         return (self^o)
     
     def __mul__(self, o):
-        size = (self.bits + o.bits)
-        if(size > 1):
-            size -= 1
-        retval = polynomial(bytearray(math.ceil(size/8)), bits=size)
-        for i in range(o.bits):
-            if(o[i]):
-                retval += (self << i)
-        return retval
+        if isinstance(o, polynomial):
+            size = (self.bits + o.bits)
+            if(size > 1):
+                size -= 1
+            retval = polynomial(bytearray(math.ceil(size/8)), bits=size)
+            for bit in range(o.bits):
+                if(o[bit]):
+                    retval += (self << bit)
+            return retval
+        else:
+            size = (self.bits)
+            retval = polynomial(bytearray(math.ceil(size/8)), bits=size)
+            for bit in range(retval.bits):
+                retval.set_bit(bit, self.get_bit(bit)*o)
+            return retval
+
+    def __rmul__(self, o):
+        return self * o
 
     def __truediv__(self, o):
         # # X is greater than or equal to Y iff the position of the highest 1 bit of 
