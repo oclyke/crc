@@ -1,5 +1,8 @@
-## CRC_Exploration
-An interactive exploration of Cyclic Redundancy Check (CRC) math/computation following along with [crc_v3.txt](http://www.ross.net/crc/download/crc_v3.txt) (also copied locally [here](https://raw.githubusercontent.com/oclyke/CRC_Exploration/master/crc_v3.txt))
+### foreward
+Ross N. Williams' 19th of August 1993 publication of '```crc_v3.txt```' exemplified the encouraging and kind-spirited nature of the young internet. An ascii work of art the text clearly laid out the fundamentals of the modern cyclic redundancy check. Now that the text is lost from its home ([http://www.ross.net/crc/download/crc_v3.txt](http://www.ross.net/crc/download/crc_v3.txt)) it is up to the next generation to carry the flame. May this repository pay homage to that original spark of generosity. One will also find the file here: [crc_v3.txt](https://oclyke.dev/conservatory/ross.net/crc/download/crc_v3.txt)
+
+## crc exploration
+An interactive exploration of Cyclic Redundancy Check (CRC) math/computation following along with '```crc_v3.txt```'
 
 Defines an abstract ```polynomial``` class to represent 'polynomical arithmetic mod 2' which is used in computation of CRCs. This makes it easy to write code such as 
 
